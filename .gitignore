@@ -26,3 +26,8 @@
 *.exe
 *.out
 *.app
+
+# Other
+*.kate*
+*.gdb
+*.log
