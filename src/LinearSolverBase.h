@@ -37,11 +37,13 @@ public:
 	
 	bool correctnessTest(const char* file)
 	{
+		int res;
+		
 		// Load the input.
 		FILE* fs = fopen(file, "r");
 		
 		int n;
-		fscanf(fs, "%d", &n);
+		res = fscanf(fs, "%d", &n);
 		
 		float* A = new float[n*n];
 		float* b = new float[n];
@@ -50,18 +52,17 @@ public:
 		
 		for (int i = 0; i < n*n; i++)
 		{
-			fscanf(fs, "%f", A + i);
-		}
-		
+			res = fscanf(fs, "%f", A + i);
+		}		
 		for (int i = 0; i < n; i++)
 		{
-			fscanf(fs, "%f", b + i);
-		}
-		
+			res = fscanf(fs, "%f", b + i);
+		}		
 		for (int i = 0; i < n; i++)
 		{
-			fscanf(fs, "%f", xCorrect + i);
+			res = fscanf(fs, "%f", xCorrect + i);
 		}
+		(void)res;
 		
 		// Solve and check the result.
 		solve(A, b, x, n);
@@ -71,7 +72,7 @@ public:
 		{
 			bool res = almostEqual(x[i], xCorrect[i]);
 			
-			fprintf(stderr, "a= %f b= %f diff= %f res= %d\n", x[i], xCorrect[i], fabs(x[i] - xCorrect[i]), res ? 1 : 0);
+			//fprintf(stderr, "a= %f b= %f diff= %f res= %d\n", x[i], xCorrect[i], fabs(x[i] - xCorrect[i]), res ? 1 : 0);
 			
 			if (res == false)
 				wrong++;
@@ -134,7 +135,7 @@ private:
 		delete[] tmp; delete[] rows;
 	}
 	
-	bool almostEqual(float A, float B, float maxAbsoluteError = 0.01, float maxRelativeError = 0.1)
+	bool almostEqual(float A, float B, float maxAbsoluteError = 0.001, float maxRelativeError = 0.01)
 	{
 		if (fabs(A - B) < maxAbsoluteError)
 			return true;
