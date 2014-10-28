@@ -10,6 +10,9 @@ using namespace std;
 
 #define A(a, b) A[a*n + b]
 
+#ifndef GAUSSTRIVIAL_H
+#define GAUSSTRIVIAL_H
+
 class GaussTrivial : public LinearSolverBase
 {
 protected:
@@ -61,3 +64,5 @@ protected:
 		}
 	}
 };
+
+#endif

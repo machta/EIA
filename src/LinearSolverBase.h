@@ -6,6 +6,9 @@
 #include <chrono>
 #include <algorithm>
 
+#ifndef LINEARSOLVERBASE_H
+#define LINEARSOLVERBASE_H
+
 class LinearSolverBase
 {
 public:
@@ -135,7 +138,7 @@ private:
 		delete[] tmp; delete[] rows;
 	}
 	
-	bool almostEqual(float A, float B, float maxAbsoluteError = 0.001, float maxRelativeError = 0.01)
+	bool almostEqual(float A, float B, float maxAbsoluteError = 0.0001, float maxRelativeError = 0.01)
 	{
 		if (fabs(A - B) < maxAbsoluteError)
 			return true;
@@ -149,3 +152,5 @@ private:
 		return relativeError <= maxRelativeError;
 	}
 };
+
+#endif

@@ -1,5 +1,7 @@
 #include "GaussTrivial.h"
 
+#include "LUTrivial.h"
+
 #include <cstdlib>
 #include <cstdio>
 
@@ -89,8 +91,8 @@ int main(int argc, char** argv)
 	const int testCount = 2;
 	
 	vector<LinearSolverBase*> tests;
-	GaussTrivial* gt = new GaussTrivial; tests.push_back(gt);
-	gt = new GaussTrivial; tests.push_back(gt);
+	LinearSolverBase* t = new GaussTrivial; tests.push_back(t);
+	t = new LUTrivial; tests.push_back(t);
 	
 	// Run tests.
 	if (mode == 0)
