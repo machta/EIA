@@ -2,6 +2,8 @@
 
 #include "LUTrivial.h"
 
+#include "CholeskyTrivial.h"
+
 #include <cstdlib>
 #include <cstdio>
 
@@ -88,11 +90,12 @@ int main(int argc, char** argv)
 	}
 	
 	// Create test objects.
-	const int testCount = 2;
+	const int testCount = 3;
 	
 	vector<LinearSolverBase*> tests;
 	LinearSolverBase* t = new GaussTrivial; tests.push_back(t);
 	t = new LUTrivial; tests.push_back(t);
+	t = new CholeskyTrivial; tests.push_back(t);
 	
 	// Run tests.
 	if (mode == 0)
