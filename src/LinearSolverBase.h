@@ -90,8 +90,7 @@ public:
 protected:
 	virtual void solve(float* A, float* b, float* x, int n) = 0;
 	
-private:
-	void generateRandomSystem(float* A, float* b, int n)
+	virtual void generateRandomSystem(float* A, float* b, int n)
 	{
 		#define tmp(a, b) tmp[a*n + b]
 		#define A(a, b) A[a*n + b]
@@ -115,7 +114,7 @@ private:
 		// Scale elements on the diagonal to prevent a system with no solution.
 		for (int i = 0; i < n; i++)
 		{
-			tmp(i, i) *= 10*1000;
+			tmp(i, i) += n;
 		}
 		
 		// Shuffle the lines.
@@ -138,6 +137,7 @@ private:
 		delete[] tmp; delete[] rows;
 	}
 	
+private:
 	bool almostEqual(float A, float B, float maxAbsoluteError = 0.0001, float maxRelativeError = 0.01)
 	{
 		if (fabs(A - B) < maxAbsoluteError)

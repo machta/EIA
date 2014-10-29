@@ -18,6 +18,8 @@ class GaussTrivial : public LinearSolverBase
 protected:
 	virtual void solve(float* A, float* b, float* x, int n)
 	{
+		//long long iters = 0;
+		
 		// Reduce A to lower triangular matrix.
 		for (int i = 0; i < n; i++)
 		{
@@ -46,6 +48,8 @@ protected:
 				
 				for (int k = i + 1; k < n; k++)
 				{
+					//iters++;
+					
 					A(j, k) -= A(i, k)*tmp;
 				}
 				b[j] -= b[i]*tmp;
@@ -62,6 +66,8 @@ protected:
 			}
 			x[i] = (b[i] - sum)/A(i, i);
 		}
+		
+		//fprintf(stderr, "Gauss %d iters= %lld\n", n, iters);
 	}
 };
 

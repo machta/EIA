@@ -93,7 +93,9 @@ int main(int argc, char** argv)
 	const int testCount = 3;
 	
 	vector<LinearSolverBase*> tests;
-	LinearSolverBase* t = new GaussTrivial; tests.push_back(t);
+	
+	LinearSolverBase* t;
+	t = new GaussTrivial; tests.push_back(t);
 	t = new LUTrivial; tests.push_back(t);
 	t = new CholeskyTrivial; tests.push_back(t);
 	
