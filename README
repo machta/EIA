@@ -4,7 +4,9 @@ Performance mode: ./main.exe selectTests 0 minOrder maxOrder
 Correctness mode: ./main.exe selectTests 1 testFiles...
 
 Parameters:
-  selectTests string designating which algorithms will be tested, '1' to run '0' to skip, example '011' for three test cases
+  selectTests string designating which algorithms will be tested
+              '1' to run '0' to skip
+              example: ./main.exe 010 ... for three test cases
   minOrder    minimal number of equations to test
   maxOrder    maximal number of equations to test
   testFiles   files with precomputed solutions
