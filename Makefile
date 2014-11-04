@@ -11,5 +11,5 @@ all : main.exe
 clean : 
 	rm main.exe
 
-main.exe : src/main.cpp src/*.h
+main.exe : src/*.cpp src/*.h
 	$(CXX) -o $@ $^ $(CXXFLAGS)

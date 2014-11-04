@@ -4,6 +4,8 @@
 
 #include "CholeskyTrivial.h"
 
+#include "very_simple_LU_twoM.cpp"
+
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -93,7 +95,7 @@ void correctnessTest(const vector<LinearSolverBase*>& tests, int testCount, int 
 int main(int argc, char** argv)
 {
 	// Create test objects.
-	const int testCount = 3;
+	const int testCount = 4;
 	
 	vector<LinearSolverBase*> tests;
 	
@@ -101,6 +103,7 @@ int main(int argc, char** argv)
 	t = new GaussTrivial; tests.push_back(t);
 	t = new LUTrivial; tests.push_back(t);
 	t = new CholeskyTrivial; tests.push_back(t);
+	t = new LUVeryTrivial; tests.push_back(t);
 	
 	if (argc >= 2)
 	{

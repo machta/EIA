@@ -75,7 +75,7 @@ public:
 		{
 			bool res = almostEqual(x[i], xCorrect[i]);
 			
-			//fprintf(stderr, "a= %f b= %f diff= %f res= %d\n", x[i], xCorrect[i], fabs(x[i] - xCorrect[i]), res ? 1 : 0);
+			fprintf(stderr, "a= %f b= %f diff= %f res= %d\n", x[i], xCorrect[i], fabs(x[i] - xCorrect[i]), res ? 1 : 0);
 			
 			if (res == false)
 				wrong++;
