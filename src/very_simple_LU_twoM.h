@@ -23,8 +23,8 @@ protected:
     float ** u =new float *[n];
 		
      for (int i = 0; i < n; i++) {
-        l[i] = new float[size];
-        u[i] = new float[size];
+        l[i] = new float[n];
+        u[i] = new float[n];
         
     }
 		
@@ -47,7 +47,7 @@ protected:
             }
             if (u[j][j] == 0) {
                
-                return 1;
+                //return 1;
             }
           l[i][j] = (A(i,j) - sum) / u[j][j]; //clen dolni trojuhelnikova matice L
         }
