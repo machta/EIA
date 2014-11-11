@@ -14,7 +14,7 @@ using namespace std;
 class LUTrivial : public LinearSolverBase
 {
 protected:
-	virtual void solve(float* A, float* b, float* x, int n, int N)
+	virtual void solve(float* A, float* b, float* x, int n, int N, int A0)
 	{
 		int* index = new int[n];
 		float* rowNormalizer = new float[n];

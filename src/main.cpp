@@ -1,4 +1,5 @@
 #include "GaussTrivial.h"
+#include "GaussOptimizedSimple.h"
 
 #include "LUTrivial.h"
 
@@ -93,14 +94,15 @@ void correctnessTest(const vector<LinearSolverBase*>& tests, int testCount, int 
 int main(int argc, char** argv)
 {
 	// Create test objects.
-	const int testCount = 3;
+	const int testCount = 4;
 	
 	vector<LinearSolverBase*> tests;
 	
-	LinearSolverBase* t;
-	t = new GaussTrivial; tests.push_back(t);
-	t = new LUTrivial; tests.push_back(t);
-	t = new CholeskyTrivial; tests.push_back(t);
+	tests.push_back(new GaussTrivial);
+	tests.push_back(new LUTrivial);
+	tests.push_back(new CholeskyTrivial);
+	
+	tests.push_back(new GaussOptimizedSimple);
 	
 	if (argc >= 2)
 	{

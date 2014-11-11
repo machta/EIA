@@ -14,7 +14,7 @@ using namespace std;
 class LUVeryTrivial : public LinearSolverBase
 {
 protected:
-	virtual void solve(float* A, float* b, float* x, int n, int N)
+	virtual void solve(float* A, float* b, float* x, int n, int N, int A0)
 	{
 	
 		float** l=new float *[n];

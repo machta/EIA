@@ -31,3 +31,5 @@
 *.kate*
 *.gdb
 *.log
+*.s
+cachegrind.out.*

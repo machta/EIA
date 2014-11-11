@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <ctime>
-#include <limits>
+#include <cstdint>
 
 #include <chrono>
 #include <algorithm>
@@ -9,7 +9,7 @@
 #ifndef LINEARSOLVERBASE_H
 #define LINEARSOLVERBASE_H
 
-#define A(a, b) A[a*N + b]
+#define A(i, j) A[A0 + (i)*N + (j)]
 
 class LinearSolverBase
 {
@@ -22,16 +22,17 @@ public:
 		using namespace std::chrono;
 
 		float* A;		
-		int N = allocateMatrix(&A, n);
+		int A0, N;
+		allocateMatrix(&A, &A0, &N,  n);
 		
 		float* b = new float[n];
 		float* x = new float[n];
 		
-		generateRandomSystem(A, b, n, N);
+		generateRandomSystem(A, b, n, N, A0);
 		
 		auto start = high_resolution_clock::now();
 		
-		solve(A, b, x, n, N);
+		solve(A, b, x, n, N, A0);
 		
 		auto end = high_resolution_clock::now();
 		
@@ -53,7 +54,8 @@ public:
 		res = fscanf(fs, "%d", &n);
 		
 		float* A;		
-		int N = allocateMatrix(&A, n);
+		int A0, N;
+		allocateMatrix(&A, &A0, &N,  n);
 		
 		float* b = new float[n];
 		float* x = new float[n];
@@ -77,7 +79,7 @@ public:
 		(void)res;
 		
 		// Solve and check the result.
-		solve(A, b, x, n, N);
+		solve(A, b, x, n, N, A0);
 		
 		int wrong = 0;
 		for (int i = 0; i < n; i++)
@@ -97,9 +99,13 @@ public:
 	}
 	
 protected:
-	virtual void solve(float* A, float* b, float* x, int n, int N) = 0;
+	int CL = 64;
+	int L1 = 128*1024;
+	//int L1 = 32*1024;
 	
-	virtual void generateRandomSystem(float* A, float* b, int n, int N)
+	virtual void solve(float* A, float* b, float* x, int n, int N, int A0) = 0;
+	
+	virtual void generateRandomSystem(float* A, float* b, int n, int N, int A0)
 	{
 		#define tmp(a, b) tmp[a*n + b]
 		
@@ -145,6 +151,14 @@ protected:
 		delete[] tmp; delete[] rows;
 	}
 	
+	template <class T>
+	T* nearestHigher16BAligned(T* ptr)
+	{
+		uintptr_t tmp = reinterpret_cast<uintptr_t>(ptr);
+		tmp = (tmp + 0xF) & ~0xF;
+		return reinterpret_cast<T*>(tmp);
+	}
+	
 private:
 	bool almostEqual(float A, float B, float maxAbsoluteError = 0.0001, float maxRelativeError = 0.01)
 	{
@@ -160,17 +174,17 @@ private:
 		return relativeError <= maxRelativeError;
 	}
 	
-	int allocateMatrix(float** A, int n)
+	void allocateMatrix(float** A, int* A0, int* N, int n)
 	{
 		// Ensure that each row is 16-byte aligned.
-		int N = (n + 3) & ~3;
+		*N = (n + 3) & ~3;
 		
-		*A = new float[N*n];
+		*A = new float[*N*n + 3];
 		
-		for (int i = 0; i < N*n; i++)
+		*A0 = nearestHigher16BAligned(*A) - *A;
+		
+		for (int i = 0; i < *N*n; i++)
 			(*A)[i] = 0;
-		
-		return N;
 	}
 };
 

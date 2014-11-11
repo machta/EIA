@@ -14,7 +14,7 @@ using namespace std;
 class CholeskyTrivial : public LinearSolverBase
 {
 protected:
-	virtual void solve(float* A, float* b, float* x, int n, int N)
+	virtual void solve(float* A, float* b, float* x, int n, int N, int A0)
 	{
 		//long long iters = 0;
 		
@@ -69,7 +69,7 @@ protected:
 		//fprintf(stderr, "Cholesky %d iters= %lld\n", n, iters);
 	}
 	
-	virtual void generateRandomSystem(float* A, float* b, int n, int N)
+	virtual void generateRandomSystem(float* A, float* b, int n, int N, int A0)
 	{
 		// Fill A with random values.
 		srand (time(NULL));
