@@ -19,10 +19,10 @@
 #$ -cwd
 
 # Defines  or  redefines  the  path used for the standard error stream of the job.
-#$ -e ~/results
+#$ -e .
 
 # The path used for the standard output stream of the job.
-#$ -o ~/results
+#$ -o .
 
 # Do not change.
 #$ -pe ompi 1
