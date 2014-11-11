@@ -8,15 +8,13 @@
 
 using namespace std;
 
-#define A(a, b) A[a*n + b]
-
 #ifndef LUTRIVIAL_H
 #define LUTRIVIAL_H
 
 class LUTrivial : public LinearSolverBase
 {
 protected:
-	virtual void solve(float* A, float* b, float* x, int n)
+	virtual void solve(float* A, float* b, float* x, int n, int N)
 	{
 		int* index = new int[n];
 		float* rowNormalizer = new float[n];

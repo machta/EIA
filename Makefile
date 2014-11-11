@@ -10,6 +10,10 @@ all : main.exe
 
 clean : 
 	rm main.exe
+	
+test : main.exe
+	./main.exe 1   1 test/symetric/t* | grep total
+	./main.exe 110 1 test/t* | grep total
 
 main.exe : src/main.cpp src/*.h
 	$(CXX) -o $@ $^ $(CXXFLAGS)

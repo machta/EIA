@@ -8,15 +8,13 @@
 
 using namespace std;
 
-#define A(a, b) A[a*n + b]
-
 #ifndef CHOLESKYTRIVIAL_H
 #define CHOLESKYTRIVIAL_H
 
 class CholeskyTrivial : public LinearSolverBase
 {
 protected:
-	virtual void solve(float* A, float* b, float* x, int n)
+	virtual void solve(float* A, float* b, float* x, int n, int N)
 	{
 		//long long iters = 0;
 		
@@ -32,15 +30,7 @@ protected:
 					//iters++;
 					
 					sum -= A(i, k)*A(j, k);
-				}				
-				/*float* rowI = &A(i, 0);
-				float* rowJ = &A(j, 0);
-				for (int k = 0; k < j; k++)
-				{
-					//iters++;
-					
-					sum -= (*rowI++)*(*rowJ++);
-				}*/
+				}
 				
 				A(i, j) = sum/A(j, j);
 			}
@@ -51,12 +41,6 @@ protected:
 			{
 				sum -= A(i, k)*A(i, k);
 			}
-			/*float* rowI = &A(i, 0);
-			for (int k = 0; k < i; k++)
-			{
-				float tmp = *rowI++;
-				sum -= tmp*tmp;
-			}*/
 			
 			A(i, i) = sqrt(sum);
 		}
@@ -85,10 +69,8 @@ protected:
 		//fprintf(stderr, "Cholesky %d iters= %lld\n", n, iters);
 	}
 	
-	virtual void generateRandomSystem(float* A, float* b, int n)
+	virtual void generateRandomSystem(float* A, float* b, int n, int N)
 	{
-		#define A(a, b) A[a*n + b]
-		
 		// Fill A with random values.
 		srand (time(NULL));
 		const float maxRand = RAND_MAX;

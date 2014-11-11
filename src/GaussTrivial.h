@@ -8,15 +8,13 @@
 
 using namespace std;
 
-#define A(a, b) A[a*n + b]
-
 #ifndef GAUSSTRIVIAL_H
 #define GAUSSTRIVIAL_H
 
 class GaussTrivial : public LinearSolverBase
 {
 protected:
-	virtual void solve(float* A, float* b, float* x, int n)
+	virtual void solve(float* A, float* b, float* x, int n, int N)
 	{
 		//long long iters = 0;
 		

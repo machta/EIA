@@ -8,15 +8,13 @@
 
 using namespace std;
 
-#define A(a, b) A[a*n + b]
-
 #ifndef LUVERYTRIVIAL_H
 #define LUVERYTRIVIAL_H
 //moc jednoduchy LU rozklad do dvou matic bez pivotizace
 class LUVeryTrivial : public LinearSolverBase
 {
 protected:
-	virtual void solve(float* A, float* b, float* x, int n)
+	virtual void solve(float* A, float* b, float* x, int n, int N)
 	{
 	
 		float** l=new float *[n];

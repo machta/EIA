@@ -9,6 +9,8 @@
 #ifndef LINEARSOLVERBASE_H
 #define LINEARSOLVERBASE_H
 
+#define A(a, b) A[a*N + b]
+
 class LinearSolverBase
 {
 public:
@@ -18,16 +20,18 @@ public:
 	long long performanceTest(int n)
 	{
 		using namespace std::chrono;
+
+		float* A;		
+		int N = allocateMatrix(&A, n);
 		
-		float* A = new float[n*n];
 		float* b = new float[n];
 		float* x = new float[n];
 		
-		generateRandomSystem(A, b, n);
+		generateRandomSystem(A, b, n, N);
 		
 		auto start = high_resolution_clock::now();
 		
-		solve(A, b, x, n);
+		solve(A, b, x, n, N);
 		
 		auto end = high_resolution_clock::now();
 		
@@ -48,15 +52,20 @@ public:
 		int n;
 		res = fscanf(fs, "%d", &n);
 		
-		float* A = new float[n*n];
+		float* A;		
+		int N = allocateMatrix(&A, n);
+		
 		float* b = new float[n];
 		float* x = new float[n];
 		float* xCorrect = new float[n];
 		
-		for (int i = 0; i < n*n; i++)
+		for (int i = 0; i < n; i++)
 		{
-			res = fscanf(fs, "%f", A + i);
-		}		
+			for (int j = 0; j < n; j++)
+			{
+				res = fscanf(fs, "%f", &A(i, j));
+			}		
+		}
 		for (int i = 0; i < n; i++)
 		{
 			res = fscanf(fs, "%f", b + i);
@@ -68,7 +77,7 @@ public:
 		(void)res;
 		
 		// Solve and check the result.
-		solve(A, b, x, n);
+		solve(A, b, x, n, N);
 		
 		int wrong = 0;
 		for (int i = 0; i < n; i++)
@@ -88,12 +97,11 @@ public:
 	}
 	
 protected:
-	virtual void solve(float* A, float* b, float* x, int n) = 0;
+	virtual void solve(float* A, float* b, float* x, int n, int N) = 0;
 	
-	virtual void generateRandomSystem(float* A, float* b, int n)
+	virtual void generateRandomSystem(float* A, float* b, int n, int N)
 	{
 		#define tmp(a, b) tmp[a*n + b]
-		#define A(a, b) A[a*n + b]
 		
 		float* tmp = new float[n*n];
 		
@@ -150,6 +158,19 @@ private:
 			relativeError = fabs((A - B) / A);
 
 		return relativeError <= maxRelativeError;
+	}
+	
+	int allocateMatrix(float** A, int n)
+	{
+		// Ensure that each row is 16-byte aligned.
+		int N = (n + 3) & ~3;
+		
+		*A = new float[N*n];
+		
+		for (int i = 0; i < N*n; i++)
+			(*A)[i] = 0;
+		
+		return N;
 	}
 };
 
