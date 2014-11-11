@@ -30,4 +30,4 @@
 # Do not change.
 #$ -q 12c_serial.q
 
-./main.exe 1 0 1 2000
+./main.exe 1 0 1751 2000

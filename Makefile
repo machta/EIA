@@ -7,8 +7,6 @@ TO_C = 2000
 FROM_P = 500
 TO_P = 1000
 
-QUEUE = queue.sh
-
 ifeq ($(DEBUG), 1)
 	CXXFLAGS += -g
 endif
@@ -29,7 +27,10 @@ clean :
 	rm -f main.exe
 	
 star : main.exe
-	qrun.sh 12c 1 serial $(QUEUE)
+	qrun.sh 12c 1 serial queue0.sh
+	qrun.sh 12c 1 serial queue1.sh
+	qrun.sh 12c 1 serial queue2.sh
+	qrun.sh 12c 1 serial queue3.sh
 	
 test : main.exe
 	./main.exe $(TESTS) 1 test/symetric/t* | grep total
