@@ -19,15 +19,15 @@
 #$ -cwd
 
 # Defines  or  redefines  the  path used for the standard error stream of the job.
-#$ -e .
+#$ -e ./results
 
 # The path used for the standard output stream of the job.
-#$ -o .
+#$ -o ./results
 
 # Do not change.
 #$ -pe ompi 1
 
 # Do not change.
-#$ -q 12c_serial.q
+#$ -q 12c_1slots_per_host.q
 
 ./main.exe 1 0 1501 1750

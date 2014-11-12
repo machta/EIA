@@ -4,7 +4,7 @@ TESTS = 1
 
 FROM_C = 2000
 TO_C = 2000
-FROM_P = 500
+FROM_P = 900
 TO_P = 1000
 
 ifeq ($(DEBUG), 1)

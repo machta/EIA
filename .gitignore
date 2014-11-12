@@ -33,3 +33,5 @@
 *.log
 *.s
 cachegrind.out.*
+results/*
+*.gcda
