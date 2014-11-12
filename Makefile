@@ -4,8 +4,8 @@ TESTS = 1
 
 FROM_C = 2000
 TO_C = 2000
-FROM_P = 900
-TO_P = 1000
+FROM_P = 500
+TO_P = 600
 
 ifeq ($(DEBUG), 1)
 	CXXFLAGS += -g
@@ -27,10 +27,10 @@ clean :
 	rm -f main.exe
 	
 star : main.exe
-	qrun.sh 12c 1 serial queue0.sh
-	qrun.sh 12c 1 serial queue1.sh
-	qrun.sh 12c 1 serial queue2.sh
-	qrun.sh 12c 1 serial queue3.sh
+	qrun.sh 12c 1 1slots_per_host queue0.sh
+	qrun.sh 12c 1 1slots_per_host queue1.sh
+	qrun.sh 12c 1 1slots_per_host queue2.sh
+	qrun.sh 12c 1 1slots_per_host queue3.sh
 	
 test : main.exe
 	./main.exe $(TESTS) 1 test/symetric/t* | grep total
