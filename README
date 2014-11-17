@@ -15,3 +15,7 @@ The order of tests is:
   1. GaussTrivial
   2. LUTrivial
   3. CholeskyTrivial
+  4. GaussOptimizedSimple
+  5. GaussOptimizedUnrolled
+  6. LUOptimizedSimple
+  7. CholeskyOptimizedSimple

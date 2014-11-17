@@ -146,11 +146,10 @@ private:
 		for (; k < elements; k++)
 			sum += A(i, k)*U(k, j);
 		
-		sumV = _mm_hadd_ps(sumV, sumV);
-		sumV = _mm_hadd_ps(sumV, sumV);
-		float tmp;
-		_mm_store_ss(&tmp, sumV);
-		return tmp + sum;
+		for (int l = 0; l < 4; l++)
+			sum += ((float*)&sumV)[l];
+		
+		return sum;
 	}
 };
 
