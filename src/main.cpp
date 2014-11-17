@@ -6,6 +6,7 @@
 #include "LUOptimizedSimple.h"
 
 #include "CholeskyTrivial.h"
+#include "CholeskyOptimizedSimple.h"
 
 #include <cstdlib>
 #include <cstdio>
@@ -96,7 +97,7 @@ void correctnessTest(const vector<LinearSolverBase*>& tests, int testCount, int 
 int main(int argc, char** argv)
 {
 	// Create test objects.
-	const int testCount = 6;
+	const int testCount = 7;
 	
 	vector<LinearSolverBase*> tests;
 	
@@ -107,6 +108,7 @@ int main(int argc, char** argv)
 	tests.push_back(new GaussOptimizedSimple);
 	tests.push_back(new GaussOptimizedUnrolled);
 	tests.push_back(new LUOptimizedSimple);
+	tests.push_back(new CholeskyOptimizedSimple);
 	
 	if (argc >= 2)
 	{

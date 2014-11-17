@@ -59,7 +59,7 @@ protected:
 			}
 			
 			// Vectorirized.
-			const int colWidth = L1/sizeof(__m128)/3;
+			const int colWidth = L1/sizeof(__m128)/4;
 			__m128* rowI = (__m128*)&A(i, i + 1 + rowOffset);
 			
 			while (rowI < (__m128*)&A(i + 1, 0))
