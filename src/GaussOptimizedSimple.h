@@ -42,19 +42,23 @@ protected:
 			}
 			
 			// Eliminate the rest of the column.
-			int rowOffset = nearestHigher16BAligned(&A(i, i + 1)) - &A(i, i + 1);
+			
+			// Process the first few elements so that the vectorized loop can start on a 16-byte aligned address.
+			int rowOffset = nearestHigherAligned(&A(i, i + 1)) - &A(i, i + 1);
 			
 			for (int j = i + 1; j < n; j++)
 			{
 				A(j, i) = A(j, i)/A(i, i); // ratio
 				
-				for (int k = i + 1; k < i + 1 + rowOffset; k++)
+				int lastK = min(i + 1 + rowOffset, n);
+				for (int k = i + 1; k < lastK; k++)
 				{
 					A(j, k) -= A(i, k)*A(j, i);
 				}
 				b[j] -= b[i]*A(j, i);
 			}
 			
+			// Vectorirized.
 			const int colWidth = L1/sizeof(__m128)/3;
 			__m128* rowI = (__m128*)&A(i, i + 1 + rowOffset);
 			
