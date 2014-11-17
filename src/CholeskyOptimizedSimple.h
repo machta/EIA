@@ -6,6 +6,8 @@
 
 #include <algorithm>
 
+#include <x86intrin.h>
+
 using namespace std;
 
 #ifndef CHOLESKYOPTIMIZEDSIMPLE_H
@@ -72,7 +74,7 @@ private:
 		__m128 sumV = _mm_set_ps1(0);
 		
 		int k = 0;
-		int kn = min(elements, nearestHigherAligned(&A(i, 0)) - &A(i, 0));
+		int kn = min(elements, (int)(nearestHigherAligned(&A(i, 0)) - &A(i, 0)));
 		
 		for (; k < kn; k++)
 			sum += A(i, k)*A(j, k);
@@ -89,10 +91,16 @@ private:
 		for (; k < elements; k++)
 			sum += A(i, k)*A(j, k);
 		
-		for (int l = 0; l < 4; l++)
+		sumV = _mm_hadd_ps(sumV, sumV);
+		sumV = _mm_hadd_ps(sumV, sumV);
+		float tmp;
+		_mm_store_ss(&tmp, sumV);
+		return tmp + sum;
+		
+		/*for (int l = 0; l < 4; l++)
 			sum += ((float*)&sumV)[l];
 		
-		return sum;
+		return sum;*/
 	}
 };
 
