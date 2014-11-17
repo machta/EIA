@@ -32,17 +32,17 @@ release :
 	make OPTIMAL=1
 
 star : main.exe
-	qrun.sh 12c 1 1slots_per_host queue00.sh
-	qrun.sh 12c 1 1slots_per_host queue01.sh
-	qrun.sh 12c 1 1slots_per_host queue02.sh
-	qrun.sh 12c 1 1slots_per_host queue03.sh
-	qrun.sh 12c 1 1slots_per_host queue04.sh
-	qrun.sh 12c 1 1slots_per_host queue05.sh
-	qrun.sh 12c 1 1slots_per_host queue06.sh
-	qrun.sh 12c 1 1slots_per_host queue07.sh
-	qrun.sh 12c 1 1slots_per_host queue08.sh
-	qrun.sh 12c 1 1slots_per_host queue09.sh
-	qrun.sh 12c 1 1slots_per_host queue10.sh
+	qrun.sh 12c 1 1slots_per_host queue/queue00.sh
+	qrun.sh 12c 1 1slots_per_host queue/queue01.sh
+	qrun.sh 12c 1 1slots_per_host queue/queue02.sh
+	qrun.sh 12c 1 1slots_per_host queue/queue03.sh
+	qrun.sh 12c 1 1slots_per_host queue/queue04.sh
+	qrun.sh 12c 1 1slots_per_host queue/queue05.sh
+	qrun.sh 12c 1 1slots_per_host queue/queue06.sh
+	qrun.sh 12c 1 1slots_per_host queue/queue07.sh
+	qrun.sh 12c 1 1slots_per_host queue/queue08.sh
+	qrun.sh 12c 1 1slots_per_host queue/queue09.sh
+	qrun.sh 12c 1 1slots_per_host queue/queue10.sh
 	
 test : main.exe
 	./main.exe $(TESTS) 1 test/symetric/t* | grep total
