@@ -44,6 +44,10 @@ void performanceTest(const vector<LinearSolverBase*>& tests, int testCount, int 
 				long long time = tests[j]->performanceTest(i);
 				printf("%12lld ", time);
 			}
+			else
+			{
+				printf("           0 ");
+			}
 		}
 		
 		printf("\n");
@@ -77,6 +81,10 @@ void correctnessTest(const vector<LinearSolverBase*>& tests, int testCount, int 
 					wrong[j]++;
 				}
 			}
+			else
+			{
+				printf("     ");
+			}
 		}
 		
 		printf("\n");
@@ -88,7 +96,13 @@ void correctnessTest(const vector<LinearSolverBase*>& tests, int testCount, int 
 	for (int j = 0; j < testCount; j++)
 	{
 		if (tests[j] != nullptr)
+		{
 			printf("%4d ", wrong[j]);
+		}
+		else
+		{
+			printf("     ");
+		}
 	}
 	
 	printf("\n");

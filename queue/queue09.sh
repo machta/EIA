@@ -30,4 +30,4 @@
 # Do not change.
 #$ -q 12c_1slots_per_host.q
 
-./main.exe 1 0 2360 2448
+./main.exe 0001111 0 2360 2448
