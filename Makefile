@@ -1,4 +1,4 @@
-CXXFLAGS = -std=c++11 -Wall -pedantic -msse4
+CXXFLAGS = -std=c++11 -Wall -pedantic -msse
 
 TESTS = 1
 
