@@ -171,7 +171,7 @@ protected:
 		
 		*A0 = nearestHigherAligned(*A) - *A;
 		
-		for (int i = 0; i < *N*n; i++)
+		for (int i = 0; i < (*N*n + 3); i++)
 			(*A)[i] = 0;
 	}
 	
