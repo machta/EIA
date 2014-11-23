@@ -1,6 +1,7 @@
 CXXFLAGS = -std=c++11 -Wall -pedantic -msse
-
 TESTS = 1
+SHELL = bash
+COMMA = ,
 
 ifeq ($(DEBUG), 1)
 	CXXFLAGS += -g
@@ -59,13 +60,15 @@ gnuplot :
 	
 	echo 'set term pdf;\
 	set output "graph";\
-	plot "tmp.log" using 1:2 with lines title "GaussTrivial",\
-	"tmp.log" using 1:3 with lines title "LUTrivial",\
-	"tmp.log" using 1:4 with lines title "CholeskyTrivial",\
-	"tmp.log" using 1:5 with lines title "GaussOptimizedSimple",\
-	"tmp.log" using 1:6 with lines title "GaussOptimized",\
-	"tmp.log" using 1:7 with lines title "LUOptimizedSimple",\
-	"tmp.log" using 1:8 with lines title "CholeskyOptimizedSimple"' | gnuplot
+	plot\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:0:1} | tr -d 0), "tmp.log" using 1:2 with lines title "GaussTrivial"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:1:1} | tr -d 0), "tmp.log" using 1:3 with lines title "LUTrivial"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:2:1} | tr -d 0), "tmp.log" using 1:4 with lines title "CholeskyTrivial"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:3:1} | tr -d 0), "tmp.log" using 1:5 with lines title "GaussOptimizedSimple"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:4:1} | tr -d 0), "tmp.log" using 1:6 with lines title "GaussOptimized"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:5:1} | tr -d 0), "tmp.log" using 1:7 with lines title "LUOptimizedSimple"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:6:1} | tr -d 0), "tmp.log" using 1:8 with lines title "CholeskyOptimizedSimple"$(COMMA))\
+	' | gnuplot
 	
 test : main.exe
 	./main.exe $(TESTS) 1 test/symetric/t* | grep total
@@ -86,3 +89,4 @@ main.s : src/*.cpp src/*.h
 	
 main.exe : src/*.cpp src/*.h
 	$(CXX) -o $@ $^ $(CXXFLAGS)
+
