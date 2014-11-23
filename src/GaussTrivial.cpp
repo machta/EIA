@@ -10,8 +10,6 @@ using namespace std;
 
 void GaussTrivial::solve(float* A, float* b, float* x, int n, int N)
 {
-	//long long iters = 0;
-	
 	// Reduce A to lower triangular matrix.
 	for (int i = 0; i < n; i++)
 	{
@@ -40,8 +38,6 @@ void GaussTrivial::solve(float* A, float* b, float* x, int n, int N)
 			
 			for (int k = i + 1; k < n; k++)
 			{
-				//iters++;
-				
 				A(j, k) -= A(i, k)*tmp;
 			}
 			b[j] -= b[i]*tmp;
@@ -58,6 +54,4 @@ void GaussTrivial::solve(float* A, float* b, float* x, int n, int N)
 		}
 		x[i] = (b[i] - sum)/A(i, i);
 	}
-	
-	//fprintf(stderr, "Gauss %d iters= %lld\n", n, iters);
 }

@@ -1,0 +1,247 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 9.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      7403,        238]
+NotebookOptionsPosition[      6829,        213]
+NotebookOutlinePosition[      7207,        229]
+CellTagsIndexPosition[      7164,        226]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Gauss", "\[IndentingNewLine]", "rows", " ", "35"}], "-", 
+    RowBox[{"44", " ", "and", " ", "48"}], "-", "56"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    UnderoverscriptBox["\[Sum]", 
+     RowBox[{"i", "=", "0"}], 
+     RowBox[{"n", "-", "1"}]], 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{
+       UnderoverscriptBox["\[Sum]", 
+        RowBox[{"j", "=", 
+         RowBox[{"i", "+", "1"}]}], 
+        RowBox[{"n", "-", "1"}]], 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{
+          UnderoverscriptBox["\[Sum]", 
+           RowBox[{"k", "=", 
+            RowBox[{"i", "+", "1"}]}], 
+           RowBox[{"n", "-", "1"}]], 
+          RowBox[{"(", "2", ")"}]}], "+", "3"}], ")"}]}], "+", "2", "+", 
+      RowBox[{
+       UnderoverscriptBox["\[Sum]", 
+        RowBox[{"j", "=", 
+         RowBox[{"i", "+", "1"}]}], 
+        RowBox[{"n", "-", "1"}]], 
+       RowBox[{"(", "2", ")"}]}]}], ")"}]}], "//", "Expand"}]}]], "Input",
+ CellChangeTimes->{{3.625737732992497*^9, 3.6257377494311647`*^9}, {
+   3.6257377910727963`*^9, 3.625737835071041*^9}, {3.6257378872808056`*^9, 
+   3.625738017207032*^9}, {3.6257381045745697`*^9, 3.625738141876049*^9}, {
+   3.625738261693158*^9, 3.6257383055986223`*^9}, {3.6257383501486635`*^9, 
+   3.625738360476547*^9}, {3.6257384267644606`*^9, 3.625738439476301*^9}, {
+   3.625738478467354*^9, 3.6257385070514164`*^9}, {3.6257388651198606`*^9, 
+   3.625738867186414*^9}, 3.625739005006756*^9, {3.6257392427726774`*^9, 
+   3.625739276205718*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"-", 
+   FractionBox["n", "6"]}], "+", 
+  FractionBox[
+   RowBox[{"3", " ", 
+    SuperscriptBox["n", "2"]}], "2"], "+", 
+  FractionBox[
+   RowBox[{"2", " ", 
+    SuperscriptBox["n", "3"]}], "3"]}]], "Output",
+ CellChangeTimes->{3.625738752896038*^9, 3.625738867914981*^9, 
+  3.6257390052704463`*^9, 3.625740033288822*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+   "LU", "\[IndentingNewLine]", "all", " ", "except", " ", "pivotization", 
+    " ", "and", " ", "calculation", " ", "of", " ", "normalizer"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"j", "=", "0"}], 
+      RowBox[{"n", "-", "1"}]], 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        UnderoverscriptBox["\[Sum]", 
+         RowBox[{"i", "=", "1"}], 
+         RowBox[{"j", "-", "1"}]], 
+        RowBox[{"(", 
+         RowBox[{
+          UnderoverscriptBox["\[Sum]", 
+           RowBox[{"k", "=", "0"}], 
+           RowBox[{"i", "-", "1"}]], 
+          RowBox[{"(", "2", ")"}]}], ")"}]}], "+", 
+       RowBox[{
+        UnderoverscriptBox["\[Sum]", 
+         RowBox[{"i", "=", "j"}], 
+         RowBox[{"n", "-", "1"}]], 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           UnderoverscriptBox["\[Sum]", 
+            RowBox[{"k", "=", "0"}], 
+            RowBox[{"j", "-", "1"}]], 
+           RowBox[{"(", "2", ")"}]}], "+", "1"}], ")"}]}], "+", 
+       RowBox[{
+        UnderoverscriptBox["\[Sum]", 
+         RowBox[{"i", "=", 
+          RowBox[{"j", "+", "1"}]}], 
+         RowBox[{"n", "-", "1"}]], 
+        RowBox[{"(", "1", ")"}]}], "+", "1"}], ")"}]}], "+", 
+    RowBox[{"2", "*", 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"i", "=", "0"}], 
+       RowBox[{"n", "-", "1"}]], 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         UnderoverscriptBox["\[Sum]", 
+          RowBox[{"j", "=", "0"}], 
+          RowBox[{"i", "-", "1"}]], 
+         RowBox[{"(", "2", ")"}]}], "+", 
+        RowBox[{"1", "/", "2"}]}], ")"}]}]}]}], "//", "Expand"}]}]], "Input",
+ CellChangeTimes->{{3.6257391444942083`*^9, 3.625739144710044*^9}, {
+  3.6257394149294443`*^9, 3.6257395389949026`*^9}, {3.6257395752191567`*^9, 
+  3.6257396096903567`*^9}, {3.6257396690334415`*^9, 3.625739676041752*^9}, {
+  3.625739713033639*^9, 3.6257397683930426`*^9}, {3.62573984845635*^9, 
+  3.625740010295977*^9}, {3.6257402487806997`*^9, 3.6257402504048395`*^9}, {
+  3.6257405320752487`*^9, 3.6257405395074177`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["n", "3"], "+", 
+  RowBox[{"2", " ", 
+   SuperscriptBox["n", "2"]}], "+", 
+  FractionBox[
+   RowBox[{"2", " ", 
+    SuperscriptBox["n", "3"]}], "3"]}]], "Output",
+ CellChangeTimes->{
+  3.625740031450801*^9, {3.625740535039327*^9, 3.625740540765319*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", "Cholesky", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     UnderoverscriptBox["\[Sum]", 
+      RowBox[{"i", "=", "0"}], 
+      RowBox[{"n", "-", "1"}]], 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{
+        UnderoverscriptBox["\[Sum]", 
+         RowBox[{"j", "=", "0"}], 
+         RowBox[{"i", "-", "1"}]], 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{
+           UnderoverscriptBox["\[Sum]", 
+            RowBox[{"k", "=", "0"}], 
+            RowBox[{"j", "-", "1"}]], 
+           RowBox[{"(", "2", ")"}]}], "+", "1"}], ")"}]}], "+", 
+       RowBox[{
+        UnderoverscriptBox["\[Sum]", 
+         RowBox[{"k", "=", "0"}], 
+         RowBox[{"i", "-", "1"}]], 
+        RowBox[{"(", "2", ")"}]}], "+", "1"}], ")"}]}], "+", 
+    RowBox[{"2", "*", 
+     RowBox[{
+      UnderoverscriptBox["\[Sum]", 
+       RowBox[{"i", "=", "0"}], 
+       RowBox[{"n", "-", "1"}]], 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{
+         UnderoverscriptBox["\[Sum]", 
+          RowBox[{"j", "=", "0"}], 
+          RowBox[{"i", "-", "1"}]], 
+         RowBox[{"(", "2", ")"}]}], "+", "1"}], ")"}]}]}]}], "//", 
+   "Expand"}]}]], "Input",
+ CellChangeTimes->{{3.6257402346703224`*^9, 3.625740259291213*^9}, {
+  3.6257403033558683`*^9, 3.625740345794431*^9}, {3.625740384500307*^9, 
+  3.6257404642364426`*^9}, {3.625740507307863*^9, 3.625740507756138*^9}, {
+  3.6257405926508427`*^9, 3.625740598386602*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox["n", "6"], "+", 
+  FractionBox[
+   RowBox[{"5", " ", 
+    SuperscriptBox["n", "2"]}], "2"], "+", 
+  FractionBox[
+   SuperscriptBox["n", "3"], "3"]}]], "Output",
+ CellChangeTimes->{
+  3.625740464572405*^9, {3.6257405682614145`*^9, 3.6257405999247975`*^9}}]
+}, Open  ]]
+},
+WindowSize->{707, 816},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+Magnification->1.2000000476837158`,
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (January 25, 2013)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 1571, 40, 120, "Input"],
+Cell[2153, 64, 355, 11, 56, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2545, 80, 2167, 60, 184, "Input"],
+Cell[4715, 142, 291, 9, 56, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5043, 156, 1474, 43, 124, "Input"],
+Cell[6520, 201, 293, 9, 88, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)

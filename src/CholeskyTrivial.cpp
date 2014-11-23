@@ -10,8 +10,6 @@ using namespace std;
 
 void CholeskyTrivial::solve(float* A, float* b, float* x, int n, int N)
 {
-	//long long iters = 0;
-	
 	// Compute L, store it int A.		
 	for (int i = 0; i < n; i++)
 	{
@@ -21,8 +19,6 @@ void CholeskyTrivial::solve(float* A, float* b, float* x, int n, int N)
 			
 			for (int k = 0; k < j; k++)
 			{
-				//iters++;
-				
 				sum -= A(i, k)*A(j, k);
 			}
 			
@@ -59,8 +55,6 @@ void CholeskyTrivial::solve(float* A, float* b, float* x, int n, int N)
 		}
 		x[i] = (x[i] - sum)/A(i, i);
 	}
-	
-	//fprintf(stderr, "Cholesky %d iters= %lld\n", n, iters);
 }
 
 void CholeskyTrivial::generateRandomSystem(float* A, float* b, int n, int N)

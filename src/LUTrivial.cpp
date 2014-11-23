@@ -72,12 +72,12 @@ void LUTrivial::solve(float* A, float* b, float* x, int n, int N)
 		}
 		
 		// Divide by pivot element.
-		if (j != n - 1)
-		{
+		//if (j != n - 1)
+		//{
 			float denom = 1/A(j, j);
 			for (int i = j + 1; i < n; i++)
 				A(i, j) *= denom;
-		}
+		//}
 	}
 	
 	// Perform forward substitution for Ly = b.

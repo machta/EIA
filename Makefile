@@ -44,17 +44,17 @@ star : main.exe
 	qrun.sh 12c 1 1slots_per_host queue/queue09.sh
 	qrun.sh 12c 1 1slots_per_host queue/queue10.sh
 	
-gnuplot : main.exe
+gnuplot :
 	cat out.log | awk '{\
 	n = $$1;\
-	n1 = n*n*n/3 /($$2/(1000*1000*1000));\
-	n2 = n*n*n/3 /($$3/(1000*1000*1000));\
-	n3 = n*n*n/3 /($$4/(1000*1000*1000));\
-	n4 = n*n*n/3 /($$5/(1000*1000*1000));\
-	n5 = n*n*n/3 /($$6/(1000*1000*1000));\
-	n6 = n*n*n/3 /($$7/(1000*1000*1000));\
-	n7 = n*n*n/3 /($$8/(1000*1000*1000));\
-	print n, n1, n2, n3, n4, n5, n6, n7;\
+	a[1] = a[4] = a[5] = -1/6*n + 3/2*n*n + 2/3*n*n*n;\
+	a[2] = a[6] = 1/3*n + 2*n*n + 2/3*n*n*n;\
+	a[3] = a[7] = 1/6*n + 5/2*n*n + 1/3*n*n*n;\
+	printf "%d", n;\
+	for (i = 2; i <= NF; i++)\
+		if ($$i == 0) printf " 0";\
+		else printf " %f", a[i - 1]/($$i/(1000*1000*1000));\
+	printf "\n";\
 	}' > tmp.log
 	
 	echo 'set term pdf;\
