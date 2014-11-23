@@ -35,3 +35,4 @@
 cachegrind.out.*
 results/*
 *.gcda
+graph

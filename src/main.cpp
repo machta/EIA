@@ -1,6 +1,6 @@
 #include "GaussTrivial.h"
 #include "GaussOptimizedSimple.h"
-#include "GaussOptimizedUnrolled.h"
+#include "GaussOptimized.h"
 
 #include "LUTrivial.h"
 #include "LUOptimizedSimple.h"
@@ -120,7 +120,7 @@ int main(int argc, char** argv)
 	tests.push_back(new CholeskyTrivial);
 	
 	tests.push_back(new GaussOptimizedSimple);
-	tests.push_back(new GaussOptimizedUnrolled);
+	tests.push_back(new GaussOptimized);
 	tests.push_back(new LUOptimizedSimple);
 	tests.push_back(new CholeskyOptimizedSimple);
 	
