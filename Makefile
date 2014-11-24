@@ -23,14 +23,10 @@ clean :
 	rm -f main.exe
 
 release :
-	rm -f *.gcda
-	make clean
-	make OPTIMAL=1 PROF_GEN=1
-	make test
-	make performance_test
-	make performance_test FROM=2000 TO=2002
-	make clean
-	make OPTIMAL=1
+	./release.sh
+	
+release_star : 
+	qrun.sh 4c 1 serial ./release.sh
 
 star : main.exe
 	qrun.sh 12c 1 1slots_per_host queue/queue00.sh
@@ -77,7 +73,7 @@ test : main.exe
 performance_test : FROM = 500
 performance_test : TO = 600
 performance_test : main.exe
-	./main.exe $(TESTS) 0 $(FROM) $(TO) > out.log
+	./main.exe $(TESTS) 0 $(FROM) $(TO) >> out.log
 
 cache_test : FROM = 2000
 cache_test : TO = 2001
