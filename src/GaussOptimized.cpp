@@ -12,10 +12,8 @@ using namespace std;
 
 void GaussOptimized::solve(float* A, float* b, float* x, int n, int N)
 {
-	//long long iters = 0;
-	
 	float* ratios = new float[n];
-	
+
 	// Reduce A to lower triangular matrix.
 	for (int i = 0; i < n; i++)
 	{
@@ -39,98 +37,71 @@ void GaussOptimized::solve(float* A, float* b, float* x, int n, int N)
 		
 		// Eliminate the rest of the column.
 		
-		// Process until 64-byte aligned address.
-		int rowOffset = nearestHigherAligned(&A(i, i + 1), 64) - &A(i, i + 1);
-		rowOffset += i + 1;
+		// Process the first few elements so that the vectorized loop can start on a 16-byte aligned address.
+		int vectorStart = i + 1 + (nearestHigherAligned(&A(i, i + 1)) - &A(i, i + 1));
+		vectorStart = min(vectorStart, n);
 		
 		for (int j = i + 1; j < n; j++)
 		{
-			ratios[j] = A(j, i)/A(i, i); // ratio
+			ratios[j] = A(j, i)/A(i, i);
 			
-			int lastK = min(rowOffset, n);
-			for (int k = i + 1; k < lastK; k++)
+			for (int k = i + 1; k < vectorStart; k++)
 			{
 				A(j, k) -= A(i, k)*ratios[j];
 			}
+			
 			b[j] -= b[i]*ratios[j];
 		}
 		
-		rowOffset += 16;
-		
-		// Vectorized and unrolled.
-		__m128 rowI0, rowI1, rowI2, rowI3;
-		
-		const int jjStep = 16;
-		int rowStart = rowOffset;
-		
-		for (int jj = i + 1; jj < n; jj += jjStep)
+		// Optimized loop.
+		const int jTile = 16;
+		const int kTile = 64;
+		const int unrollFactor = 4;
+
+		__m128* rowI = reinterpret_cast<__m128*>(&A(i, vectorStart));
+		int kkn = (N - vectorStart)/4;
+
+		for (int jj = i + 1; jj < n; jj += jTile)
 		{
-			for (rowOffset = rowStart ; rowOffset <= n; rowOffset += 16)
+			for (int kk = 0; kk < kkn; kk += kTile)
 			{
-				rowI0 = _mm_load_ps(&A(i, rowOffset - 16));
-				rowI1 = _mm_load_ps(&A(i, rowOffset - 12));
-				rowI2 = _mm_load_ps(&A(i, rowOffset - 8));
-				rowI3 = _mm_load_ps(&A(i, rowOffset - 4));
-				
-				for (int j = jj; j < min(n, jj + jjStep); j++)
+				int jn = min(n, jj + jTile);
+
+				// Unrolled.
+				int jnU = jj + (jn - jj)/unrollFactor*unrollFactor;
+				for (int j = jj; j < jnU; j += unrollFactor)
 				{
+					__m128 ratio[unrollFactor];
+					for (int l = 0; l < unrollFactor; l++)
+					{
+						ratio[l] = _mm_set_ps1(ratios[j + l]);
+					}
+					
+					int kn = min(kkn, kk + kTile);
+					for (int k = kk; k < kn; k++)
+					{
+						__m128 tmp = rowI[k];
+						for (int l = 0; l < unrollFactor; l++)
+						{
+							__m128* rowJ = rowI + k + (j + l - i)*N/4;
+							*rowJ = _mm_sub_ps(*rowJ, _mm_mul_ps(tmp, ratio[l]));
+						}
+					}
+				}
+
+				for (int j = jnU; j < jn; j++)
+				{
+					__m128* rowJ = rowI + (j - i)*N/4;
 					__m128 ratio = _mm_set_ps1(ratios[j]);
-					__m128 tmp;
-					__m128* rowJ = reinterpret_cast<__m128*>(&A(j, rowOffset - 16));
 					
-					tmp = _mm_mul_ps(rowI0, ratio);
-					*rowJ = _mm_sub_ps(*rowJ, tmp);
-					rowJ++;
-					
-					tmp = _mm_mul_ps(rowI1, ratio);
-					*rowJ = _mm_sub_ps(*rowJ, tmp);
-					rowJ++;
-					
-					tmp = _mm_mul_ps(rowI2, ratio);
-					*rowJ = _mm_sub_ps(*rowJ, tmp);
-					rowJ++;
-					
-					tmp = _mm_mul_ps(rowI3, ratio);
-					*rowJ = _mm_sub_ps(*rowJ, tmp);
+					int kn = min(kkn, kk + kTile);
+					for (int k = kk; k < kn; k++)
+					{
+						rowJ[k] = _mm_sub_ps(rowJ[k], _mm_mul_ps(rowI[k], ratio));
+					}
 				}
 			}
 		}
-		
-		rowOffset -= 16;
-		
-		// This part is taken from GaussOptimizedSimple.
-		//const int colWidth = L1/sizeof(__m128)/3;
-		//__m128* rowI = (__m128*)&A(i, i + 1 + rowOffset);
-		__m128* rowI = (__m128*)&A(i, rowOffset);
-		
-		//while (rowI < (__m128*)&A(i + 1, 0))
-		//{
-			//int kn = min(rowI + colWidth, (__m128*)&A(i + 1, 0)) - rowI;
-			int kn = (__m128*)&A(i + 1, 0) - rowI;
-			
-			for (int j = i + 1; j < n; j++)
-			{
-				__m128* rowJ = rowI + (j - i)*N/4;
-				//__m128 ratio = _mm_set_ps1(A(j, i));
-				__m128 ratio = _mm_set_ps1(ratios[j]);
-				
-				for (int k = 0; k < kn; k++)
-				{
-					__m128 tmp = _mm_mul_ps(rowI[k], ratio);
-					rowJ[k] = _mm_sub_ps(rowJ[k], tmp);
-				}
-			}
-			
-			//rowI += kn;
-		//}
-		
-		/*for (int j = i + 1; j < n; j++)
-		{
-			for (int k = rowOffset; k < n; k++)
-			{
-				A(j, k) -= A(i, k)*ratios[j];
-			}
-		}*/
 	}
 	
 	// Calculate x.
@@ -145,6 +116,4 @@ void GaussOptimized::solve(float* A, float* b, float* x, int n, int N)
 	}
 	
 	delete[] ratios;
-	
-	//fprintf(stderr, "Gauss %d iters= %lld\n", n, iters);
 }
