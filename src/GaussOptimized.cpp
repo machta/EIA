@@ -54,9 +54,9 @@ void GaussOptimized::solve(float* A, float* b, float* x, int n, int N)
 		}
 		
 		// Optimized loop.
-		const int jTile = 16;
-		const int kTile = 64;
-		const int unrollFactor = 4;
+		const int jTile = 8;
+		const int kTile = 32;
+		const int unrollFactor = 2;
 
 		__m128* rowI = reinterpret_cast<__m128*>(&A(i, vectorStart));
 		int kkn = (N - vectorStart)/4;
