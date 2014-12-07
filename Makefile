@@ -2,6 +2,7 @@ CXXFLAGS = -std=c++11 -Wall -pedantic -msse
 TESTS = 1
 SHELL = bash
 COMMA = ,
+TMP := $(shell mktemp)
 
 ifeq ($(DEBUG), 1)
 	CXXFLAGS += -g
@@ -26,7 +27,8 @@ release :
 	./release.sh
 	
 release_star : 
-	qrun.sh 4c 1 serial ./release.sh
+	qrun.sh 4c 1 serial ./release.sh | awk 'NR == 2 { print $$3 }' > $(TMP)
+	while [ $$(qstat | grep $$(cat $(TMP)) | wc -l) != 0 ]; do sleep 10; done;
 
 star : main.exe
 	qrun.sh 12c 1 1slots_per_host queue/queue00.sh
@@ -52,18 +54,18 @@ gnuplot :
 		if ($$i == 0) printf " 0";\
 		else printf " %f", a[i - 1]/($$i/(1000*1000*1000));\
 	printf "\n";\
-	}' > tmp.log
+	}' > $(TMP)
 	
 	echo 'set term pdf;\
 	set output "graph";\
 	plot\
-	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:0:1} | tr -d 0), "tmp.log" using 1:2 with lines title "GaussTrivial"$(COMMA))\
-	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:1:1} | tr -d 0), "tmp.log" using 1:3 with lines title "LUTrivial"$(COMMA))\
-	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:2:1} | tr -d 0), "tmp.log" using 1:4 with lines title "CholeskyTrivial"$(COMMA))\
-	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:3:1} | tr -d 0), "tmp.log" using 1:5 with lines title "GaussOptimizedSimple"$(COMMA))\
-	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:4:1} | tr -d 0), "tmp.log" using 1:6 with lines title "GaussOptimized"$(COMMA))\
-	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:5:1} | tr -d 0), "tmp.log" using 1:7 with lines title "LUOptimizedSimple"$(COMMA))\
-	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:6:1} | tr -d 0), "tmp.log" using 1:8 with lines title "CholeskyOptimizedSimple"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:0:1} | tr -d 0), "$(TMP)" using 1:2 with lines title "GaussTrivial"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:1:1} | tr -d 0), "$(TMP)" using 1:3 with lines title "LUTrivial"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:2:1} | tr -d 0), "$(TMP)" using 1:4 with lines title "CholeskyTrivial"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:3:1} | tr -d 0), "$(TMP)" using 1:5 with lines title "GaussOptimizedSimple"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:4:1} | tr -d 0), "$(TMP)" using 1:6 with lines title "GaussOptimized"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:5:1} | tr -d 0), "$(TMP)" using 1:7 with lines title "LUOptimizedSimple"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:6:1} | tr -d 0), "$(TMP)" using 1:8 with lines title "CholeskyOptimizedSimple"$(COMMA))\
 	' | gnuplot
 	
 test : main.exe
