@@ -1,0 +1,2 @@
+8 = jTile
+32 = kTile

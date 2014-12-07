@@ -7,8 +7,14 @@ using namespace std;
 
 class GaussOptimized : public LinearSolverBase
 {
+public:
+	GaussOptimized();
+	
 protected:
 	virtual void solve(float* A, float* b, float* x, int n, int N);
+	
+private:
+	int jTile, kTile;
 };
 
 #endif
