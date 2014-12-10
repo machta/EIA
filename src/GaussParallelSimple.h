@@ -1,9 +1,9 @@
 #include "LinearSolverBase.h"
 
-#ifndef LUOPTIMIZEDSIMPLE_H
-#define LUOPTIMIZEDSIMPLE_H
+#ifndef GAUSSPARALLELSIMPLE_H
+#define GAUSSPARALLELSIMPLE_H
 
-class LUOptimizedSimple : public LinearSolverBase
+class GaussParallelSimple : public LinearSolverBase
 {
 protected:
 	virtual void solve(float* A, float* b, float* x, int n, int N);

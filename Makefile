@@ -1,4 +1,4 @@
-CXXFLAGS = -std=c++11 -Wall -pedantic -msse
+CXXFLAGS = -std=c++11 -Wall -pedantic -msse -fopenmp
 TESTS = 1
 SHELL = bash
 COMMA = ,
@@ -46,9 +46,9 @@ star : main.exe
 gnuplot :
 	cat out.log | awk '{\
 	n = $$1;\
-	a[1] = a[4] = a[5] = -1/6*n + 3/2*n*n + 2/3*n*n*n;\
-	a[2] = a[6] = 1/3*n + 2*n*n + 2/3*n*n*n;\
-	a[3] = a[7] = 1/6*n + 5/2*n*n + 1/3*n*n*n;\
+	a[1] = a[4] = a[5] = a[8] = -1/6*n + 3/2*n*n + 2/3*n*n*n;\
+	a[2] = a[6] = a[9] = 1/3*n + 2*n*n + 2/3*n*n*n;\
+	a[3] = a[7] = a[10] = 1/6*n + 5/2*n*n + 1/3*n*n*n;\
 	printf "%d", n;\
 	for (i = 2; i <= NF; i++)\
 		if ($$i == 0) printf " 0";\
@@ -75,7 +75,7 @@ test : main.exe
 performance_test : FROM = 500
 performance_test : TO = 600
 performance_test : main.exe
-	./main.exe $(TESTS) 0 $(FROM) $(TO) >> out.log
+	./main.exe $(TESTS) 0 $(FROM) $(TO)
 
 cache_test : FROM = 2000
 cache_test : TO = 2001

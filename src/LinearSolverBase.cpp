@@ -1,5 +1,11 @@
 #include "LinearSolverBase.h"
-	
+
+#include <algorithm>
+
+#include <omp.h>
+
+using namespace std;
+
 long long LinearSolverBase::performanceTest(int n)
 {
 	using namespace std::chrono;
@@ -130,4 +136,64 @@ void LinearSolverBase::generateRandomSystem(float* A, float* b, int n, int N)
 	
 	delete[] tmp; delete[] rows;
 }
+
+float LinearSolverBase::vectorDotProduct(float* A, float* B, int n)
+{
+	float sum = 0;
+	__m128 sumV = _mm_set_ps1(0);
 	
+	int k = 0;
+	int kn = min(n, (int)(nearestHigherAligned(A) - A));
+	
+	for (; k < kn; k++)
+		sum += A[k]*B[k];
+	
+	kn += (n - kn)/4*4;
+	__m128* Ap = (__m128*)(A + k);
+	__m128* Bp = (__m128*)(B + k);
+	
+	for (; k < kn; k += 4)
+	{
+		sumV = _mm_add_ps(sumV, _mm_mul_ps(*Ap++, *Bp++));
+	}
+	
+	for (; k < n; k++)
+		sum += A[k]*B[k];
+	
+	for (int l = 0; l < 4; l++)
+		sum += ((float*)&sumV)[l];
+	
+	return sum;
+}
+
+float LinearSolverBase::parallelVectorDotProduct(float* A, float* B, int n)
+{
+	float sum = 0;
+	__m128 sumV = _mm_set_ps1(0);
+	
+	int k;
+	int kn = min(n, (int)(nearestHigherAligned(A) - A));
+	
+	for (k = 0; k < kn; k++)
+		sum += A[k]*B[k];
+	
+	kn = (n - kn)/4;
+	__m128* Ap = (__m128*)(A + k);
+	__m128* Bp = (__m128*)(B + k);
+	
+	#pragma omp declare reduction (vectorSum : __m128 : omp_out = _mm_add_ps(omp_out, omp_in))
+	
+	#pragma omp parallel for reduction(vectorSum : sumV)
+	for (int i = 0; i < kn; i++)
+	{
+		sumV = _mm_add_ps(sumV, _mm_mul_ps(Ap[i], Bp[i]));
+	}
+	
+	for (k += kn*4; k < n; k++)
+		sum += A[k]*B[k];
+	
+	for (int l = 0; l < 4; l++)
+		sum += ((float*)&sumV)[l];
+	
+	return sum;
+}

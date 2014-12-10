@@ -34,9 +34,9 @@ rm -f *.gcda
 make clean
 make OPTIMAL=1 PROF_GEN=1
 make test
-make performance_test FROM=1000 TO=1007
+#make performance_test FROM=1000 TO=1007
 make performance_test FROM=2000 TO=2003
-make performance_test FROM=3000 TO=3001
-make performance_test FROM=4000 TO=4000
+#make performance_test FROM=3000 TO=3001
+#make performance_test FROM=4000 TO=4000
 make clean
 make OPTIMAL=1
