@@ -181,9 +181,9 @@ float LinearSolverBase::parallelVectorDotProduct(float* A, float* B, int n)
 	__m128* Ap = (__m128*)(A + k);
 	__m128* Bp = (__m128*)(B + k);
 	
-	#pragma omp declare reduction (vectorSum : __m128 : omp_out = _mm_add_ps(omp_out, omp_in))
+	//#pragma omp declare reduction (vectorSum : __m128 : omp_out = _mm_add_ps(omp_out, omp_in))
 	
-	#pragma omp parallel for reduction(vectorSum : sumV)
+	//#pragma omp parallel for reduction(vectorSum : sumV)
 	for (int i = 0; i < kn; i++)
 	{
 		sumV = _mm_add_ps(sumV, _mm_mul_ps(Ap[i], Bp[i]));
