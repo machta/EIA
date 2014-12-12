@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include <x86intrin.h>
 #include <omp.h>
 
 using namespace std;
