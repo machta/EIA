@@ -49,6 +49,9 @@ protected:
 			(*A)[i] = 0;
 	}
 	
+	float vectorDotProduct(float* A, float* B, int n);
+	float parallelVectorDotProduct(float* A, float* B, int n);
+	
 private:
 	bool almostEqual(float A, float B, float maxAbsoluteError = 0.0001, float maxRelativeError = 0.01)
 	{

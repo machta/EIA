@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#define unrollFactor 4
+#define unrollFactor 1
 
 // UNROLL_A
 #if unrollFactor == 1

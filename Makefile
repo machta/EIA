@@ -1,4 +1,4 @@
-CXXFLAGS = -std=c++11 -Wall -pedantic -msse
+CXXFLAGS = -std=c++11 -Wall -pedantic -msse -fopenmp
 TESTS = 1
 QUEUE = queue.sh
 
@@ -11,7 +11,8 @@ ifeq ($(DEBUG), 1)
 endif
 	
 ifeq ($(OPTIMAL), 1)
-	CXXFLAGS += -O3 -march=opteron-sse3 -fprofile-use
+	#CXXFLAGS += -O3 -march=opteron-sse3 -fprofile-use
+	CXXFLAGS += -O3 -march=native
 else
 	CXXFLAGS += -O0
 endif
@@ -38,9 +39,9 @@ star : main.exe
 gnuplot :
 	cat out.log | awk '{\
 	n = $$1;\
-	a[1] = a[4] = a[5] = -1/6*n + 3/2*n*n + 2/3*n*n*n;\
-	a[2] = a[6] = 1/3*n + 2*n*n + 2/3*n*n*n;\
-	a[3] = a[7] = 1/6*n + 5/2*n*n + 1/3*n*n*n;\
+	a[1] = a[4] = a[5] = a[8] = -1/6*n + 3/2*n*n + 2/3*n*n*n;\
+	a[2] = a[6] = a[9] = 1/3*n + 2*n*n + 2/3*n*n*n;\
+	a[3] = a[7] = a[10] = 1/6*n + 5/2*n*n + 1/3*n*n*n;\
 	printf "%d", n;\
 	for (i = 2; i <= NF; i++)\
 		if ($$i == 0) printf " 0";\
@@ -58,6 +59,9 @@ gnuplot :
 	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:4:1} | tr -d 0), "$(TMP)" using 1:6 with lines title "GaussOptimized"$(COMMA))\
 	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:5:1} | tr -d 0), "$(TMP)" using 1:7 with lines title "LUOptimizedSimple"$(COMMA))\
 	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:6:1} | tr -d 0), "$(TMP)" using 1:8 with lines title "CholeskyOptimizedSimple"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:7:1} | tr -d 0), "$(TMP)" using 1:9 with lines title "GaussParallelSimple"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:8:1} | tr -d 0), "$(TMP)" using 1:10 with lines title "LUParallelSimple"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:9:1} | tr -d 0), "$(TMP)" using 1:11 with lines title "CholeskyParallelSimple"$(COMMA))\
 	' | gnuplot
 	
 test : main.exe
@@ -67,7 +71,7 @@ test : main.exe
 performance_test : FROM = 500
 performance_test : TO = 600
 performance_test : main.exe
-	./main.exe $(TESTS) 0 $(FROM) $(TO) >> out.log
+	./main.exe $(TESTS) 0 $(FROM) $(TO)
 
 cache_test : FROM = 2000
 cache_test : TO = 2001
