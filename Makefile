@@ -9,7 +9,8 @@ ifeq ($(DEBUG), 1)
 endif
 	
 ifeq ($(OPTIMAL), 1)
-	CXXFLAGS += -O3 -march=opteron-sse3 -fprofile-use
+	#CXXFLAGS += -O3 -march=opteron-sse3 -fprofile-use
+	CXXFLAGS += -O3 -march=native
 else
 	CXXFLAGS += -O0
 endif
@@ -67,8 +68,8 @@ gnuplot :
 	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:5:1} | tr -d 0), "$(TMP)" using 1:7 with lines title "LUOptimizedSimple"$(COMMA))\
 	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:6:1} | tr -d 0), "$(TMP)" using 1:8 with lines title "CholeskyOptimizedSimple"$(COMMA))\
 	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:7:1} | tr -d 0), "$(TMP)" using 1:9 with lines title "GaussParallelSimple"$(COMMA))\
-	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:8:1} | tr -d 0), "$(TMP)" using 1:10 with lines title "XXX"$(COMMA))\
-	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:9:1} | tr -d 0), "$(TMP)" using 1:11 with lines title "XXX"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:8:1} | tr -d 0), "$(TMP)" using 1:10 with lines title "LUParallelSimple"$(COMMA))\
+	$(if $(shell str=$(TESTS)111111111111111111111 ; echo $${str:9:1} | tr -d 0), "$(TMP)" using 1:11 with lines title "CholeskyParallelSimple"$(COMMA))\
 	' | gnuplot
 	
 test : main.exe

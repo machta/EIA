@@ -6,8 +6,6 @@
 
 #include <algorithm>
 
-#include <omp.h>
-
 using namespace std;
 
 void CholeskyParallelSimple::solve(float* A, float* b, float* x, int n, int N)

@@ -7,8 +7,6 @@
 
 #include <algorithm>
 
-#include <omp.h>
-
 using namespace std;
 
 #define U(i, j) U[U0 + (j)*UN + (i)]
