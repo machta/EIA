@@ -1,5 +1,7 @@
 CXXFLAGS = -std=c++11 -Wall -pedantic -msse
 TESTS = 1
+QUEUE = queue.sh
+
 SHELL = bash
 COMMA = ,
 TMP := $(shell mktemp)
@@ -31,17 +33,7 @@ release_star :
 	while [ $$(qstat | grep $$(cat $(TMP)) | wc -l) != 0 ]; do sleep 10; done;
 
 star : main.exe
-	qrun.sh 12c 1 1slots_per_host queue/queue00.sh
-	qrun.sh 12c 1 1slots_per_host queue/queue01.sh
-	qrun.sh 12c 1 1slots_per_host queue/queue02.sh
-	qrun.sh 12c 1 1slots_per_host queue/queue03.sh
-	qrun.sh 12c 1 1slots_per_host queue/queue04.sh
-	qrun.sh 12c 1 1slots_per_host queue/queue05.sh
-	qrun.sh 12c 1 1slots_per_host queue/queue06.sh
-	qrun.sh 12c 1 1slots_per_host queue/queue07.sh
-	qrun.sh 12c 1 1slots_per_host queue/queue08.sh
-	qrun.sh 12c 1 1slots_per_host queue/queue09.sh
-	qrun.sh 12c 1 1slots_per_host queue/queue10.sh
+	qrun.sh 12c 1 1slots_per_host $(QUEUE)
 	
 gnuplot :
 	cat out.log | awk '{\
