@@ -41,7 +41,7 @@ void GaussParallelSimple::solve(float* A, float* b, float* x, int n, int N)
 		__m128* rowI = reinterpret_cast<__m128*>(&A(i, vectorStart));
 		int kn = (N - vectorStart)/4;
 		
-		#pragma omp parallel for
+		#pragma omp parallel for schedule ( static )
 		for (int j = i + 1; j < n; j++)
 		{
 			// Process the first few elements so that the vectorized loop can start on a 16-byte aligned address.

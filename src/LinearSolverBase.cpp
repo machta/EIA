@@ -186,7 +186,7 @@ float LinearSolverBase::parallelVectorDotProduct(float* A, float* B, int n)
 	{
 		__m128 partialSumV = _mm_set_ps1(0);
 		
-		#pragma omp for nowait
+		#pragma omp for schedule ( static ) nowait
 		for (int i = 0; i < kn; i++)
 		{
 			partialSumV = _mm_add_ps(partialSumV, _mm_mul_ps(Ap[i], Bp[i]));
